@@ -10,6 +10,7 @@
         'security/ir.model.access.csv',
         'report/css_test_templates.xml',
         'report/sale_quotation_professional.xml',
+        'report/paper_muncher_issues_test.xml',
         'views/sale_order_views.xml',
         'views/pdf_benchmark_wizard_views.xml',
     ],

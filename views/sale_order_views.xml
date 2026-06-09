@@ -11,6 +11,14 @@
                         type="object"
                         string="Presupuesto profesional"
                         groups="sales_team.group_sale_salesman"/>
+                <button name="action_print_pm_issues_test_paper_muncher"
+                        type="object"
+                        string="PM Issues Test"
+                        groups="sales_team.group_sale_salesman"/>
+                <button name="action_print_pm_issues_test_wkhtml"
+                        type="object"
+                        string="PM Issues (wkhtml)"
+                        groups="sales_team.group_sale_salesman"/>
                 <button name="action_print_css_test_extreme"
                         type="object"
                         string="Imprimir test CSS"

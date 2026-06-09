@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+    Paper Muncher GitHub issues regression sheet (odoo/paper-muncher).
+    Each block states the issue number and the expected rendering.
+    -->
+
+    <template id="report_paper_muncher_issues_test">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="pdf_tester.report_paper_muncher_issues_document"
+                   t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_paper_muncher_issues_document">
+        <t t-call="web.external_layout">
+            <div class="page pm-issues">
+                <style>
+                    .pm-issues { font-family: Helvetica, Arial, sans-serif; font-size: 10pt; color: #222; }
+                    .pm-issues .pm-header {
+                        text-align: center;
+                        padding: 12px;
+                        margin-bottom: 20px;
+                        border: 3px solid #000;
+                        background: #f0f0f0;
+                    }
+                    .pm-issues .pm-issue {
+                        margin-bottom: 22px;
+                        padding: 12px;
+                        border: 2px solid #333;
+                        page-break-inside: avoid;
+                    }
+                    .pm-issues .pm-issue-id {
+                        display: inline-block;
+                        background: #000;
+                        color: #fff;
+                        padding: 2px 8px;
+                        font-weight: bold;
+                        font-size: 0.85rem;
+                        margin-bottom: 6px;
+                    }
+                    .pm-issues .pm-issue-title { font-weight: bold; margin: 0 0 4px 0; }
+                    .pm-issues .pm-expect {
+                        font-size: 0.8rem;
+                        color: #555;
+                        margin: 0 0 10px 0;
+                        font-style: italic;
+                    }
+                    .pm-issues .pm-row { display: flex; gap: 12px; flex-wrap: wrap; }
+                    .pm-issues .pm-cell { flex: 1; min-width: 120px; padding: 10px; }
+
+                    /* #157 */
+                    .pm-bg-red { background-color: #ff0000; color: #fff; }
+                    .pm-bg-green { background-color: #00aa00; color: #fff; }
+                    .pm-bg-blue { background-color: #0000ff; color: #fff; }
+
+                    /* #158 */
+                    .pm-b-solid { border: 4px solid #ff0000; }
+                    .pm-b-dashed { border: 4px dashed #0000ff; }
+                    .pm-b-radius { border: 3px solid #00aa00; border-radius: 16px; }
+
+                    /* #158 text-align */
+                    .pm-ta-left { text-align: left; border: 1px solid #ccc; padding: 6px; }
+                    .pm-ta-center { text-align: center; border: 1px solid #ccc; padding: 6px; }
+                    .pm-ta-right { text-align: right; border: 1px solid #ccc; padding: 6px; }
+                    .pm-ta-justify {
+                        text-align: justify; border: 1px solid #ccc; padding: 6px;
+                    }
+
+                    /* #156 */
+                    .pm-lists { padding-left: 20px; }
+                    .pm-lists ul { list-style-type: disc; }
+                    .pm-lists ol { list-style-type: decimal; }
+
+                    /* #56 / #57 columns */
+                    .pm-columns {
+                        column-count: 3;
+                        column-gap: 20px;
+                        column-rule: 2px solid #714b67;
+                        padding: 8px;
+                        border: 1px solid #ddd;
+                    }
+
+                    /* #162 / #136 */
+                    .pm-page1-block {
+                        height: 200px;
+                        background: #ffe0e0;
+                        border: 2px solid #f00;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                    .pm-page-break-before {
+                        page-break-before: always;
+                        break-before: page;
+                    }
+                    .pm-page2-block {
+                        height: 200px;
+                        background: #e0e0ff;
+                        border: 2px solid #00f;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+
+                    /* #159 */
+                    .pm-pagenum-footer {
+                        margin-top: 16px;
+                        padding: 8px;
+                        border-top: 1px solid #999;
+                        text-align: center;
+                        font-size: 0.85rem;
+                    }
+
+                    .pm-doc-footer {
+                        margin-top: 24px;
+                        padding: 12px;
+                        background: #eee;
+                        border-top: 3px double #714b67;
+                        text-align: center;
+                    }
+
+                    /* images */
+                    .pm-img-box {
+                        display: flex;
+                        gap: 16px;
+                        align-items: center;
+                        flex-wrap: wrap;
+                    }
+                    .pm-img-box img {
+                        max-height: 80px;
+                        border: 2px solid #000;
+                    }
+                    .pm-img-label { font-size: 0.75rem; text-align: center; }
+
+                    /* #57 RTL */
+                    .pm-rtl {
+                        direction: rtl;
+                        text-align: right;
+                        border: 1px solid #ccc;
+                        padding: 10px;
+                        font-size: 1.1rem;
+                    }
+
+                    .pm-na {
+                        background: #f9f9f9;
+                        color: #888;
+                        padding: 10px;
+                        border: 1px dashed #aaa;
+                        font-size: 0.85rem;
+                    }
+                </style>
+
+                <div class="pm-header">
+                    <h2>Paper Muncher - Issues Test Sheet</h2>
+                    <p>Order: <span t-field="doc.name"/> | Compare PDF output vs expected behaviour per issue block.</p>
+                    <p style="font-size:0.8rem;">
+                        Not testable here: #221 Linux Mint, #184 Ubuntu build, #142 commit, #72 FreeBSD, #82 JavaScript files
+                    </p>
+                </div>
+
+                <!-- #156 Background color -->
+                <div class="pm-issue">
+                    <span class="pm-issue-id">#156</span>
+                    <p class="pm-issue-title">Background color is not working</p>
+                    <p class="pm-expect">Expected: three boxes with solid RED, GREEN, BLUE backgrounds.</p>
+                    <div class="pm-row">
+                        <div class="pm-cell pm-bg-red">RED #ff0000</div>
+                        <div class="pm-cell pm-bg-green">GREEN #00aa00</div>
+                        <div class="pm-cell pm-bg-blue">BLUE #0000ff</div>
+                    </div>
+                </div>
+
+                <!-- #157 Border -->
+                <div class="pm-issue">
+                    <span class="pm-issue-id">#157</span>
+                    <p class="pm-issue-title">Border is not applied</p>
+                    <p class="pm-expect">Expected: solid red border, dashed blue border, green rounded border.</p>
+                    <div class="pm-row">
+                        <div class="pm-cell pm-b-solid">solid 4px red</div>
+                        <div class="pm-cell pm-b-dashed">dashed 4px blue</div>
+                        <div class="pm-cell pm-b-radius">radius 16px green</div>
+                    </div>
+                </div>
+
+                <!-- #158 text-align -->
+                <div class="pm-issue">
+                    <span class="pm-issue-id">#158</span>
+                    <p class="pm-issue-title">text-align is not applied</p>
+                    <p class="pm-expect">Expected: left / center / right / justified alignment visible in each box.</p>
+                    <div class="pm-ta-left">LEFT aligned text in this box.</div>
+                    <div class="pm-ta-center">CENTER aligned text in this box.</div>
+                    <div class="pm-ta-right">RIGHT aligned text in this box.</div>
+                    <div class="pm-ta-justify">
+                        JUSTIFY: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+                    </div>
+                </div>
+
+                <!-- #155 Bullet points -->
+                <div class="pm-issue">
+                    <span class="pm-issue-id">#155</span>
+                    <p class="pm-issue-title">Bullet points are not working</p>
+                    <p class="pm-expect">Expected: disc bullets and decimal numbers visible.</p>
+                    <div class="pm-lists pm-row">
+                        <div class="pm-cell">
+                            <ul>
+                                <li>Bullet item one</li>
+                                <li>Bullet item two</li>
+                                <li>Bullet item three</li>
+                            </ul>
+                        </div>
+                        <div class="pm-cell">
+                            <ol>
+                                <li>Numbered one</li>
+                                <li>Numbered two</li>
+                                <li>Numbered three</li>
+                            </ol>
+                        </div>
+                        <div class="pm-cell">
+                            <ul>
+                                <li>Parent
+                                    <ul>
+                                        <li>Nested A</li>
+                                        <li>Nested B</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- #143 Image printing -->
+                <div class="pm-issue">
+                    <span class="pm-issue-id">#143</span>
+                    <p class="pm-issue-title">Image printing is not working</p>
+                    <p class="pm-expect">Expected: company logo (PNG) visible with black border.</p>
+                    <div class="pm-img-box">
+                        <div t-if="doc.company_id.logo">
+                            <img t-att-src="image_data_uri(doc.company_id.logo)" alt="Company logo PNG"/>
+                            <p class="pm-img-label">Company logo (PNG via image_data_uri)</p>
+                        </div>
+                        <div t-else="">
+                            <p class="pm-img-label">No company logo - configure in Settings / Company</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- #161 webp -->
+                <div class="pm-issue">
+                    <span class="pm-issue-id">#161</span>
+                    <p class="pm-issue-title">.webp images are not being rendered</p>
+                    <p class="pm-expect">Expected: small red square from inline WebP data-URI.</p>
+                    <div class="pm-img-box">
+                        <div>
+                            <img src="data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA="
+                                 alt="1x1 webp test" width="80" height="80"/>
+                            <p class="pm-img-label">Inline WebP (1x1 pixel)</p>
+                        </div>
+                        <div>
+                            <t t-set="pm_base_url" t-value="doc.env['ir.config_parameter'].sudo().get_str('web.base.url')"/>
+                            <img t-att-src="pm_base_url + '/pdf_tester/static/src/img/test.webp'"
+                                 alt="static webp" width="80" height="80"/>
+                            <p class="pm-img-label">HTTP: /pdf_tester/static/src/img/test.webp</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- #56 CSS Columns -->
+                <div class="pm-issue">
+                    <span class="pm-issue-id">#56</span>
+                    <p class="pm-issue-title">CSS Columns</p>
+                    <p class="pm-expect">Expected: text flows in 3 columns with vertical rule between them.</p>
+                    <div class="pm-columns">
+                        <p>Column flow test paragraph one. This text should wrap into multiple columns.</p>
+                        <p>Column flow test paragraph two. Lorem ipsum dolor sit amet consectetur.</p>
+                        <p>Column flow test paragraph three. Adipiscing elit sed do eiusmod tempor.</p>
+                        <p>Column flow test paragraph four. Incididunt ut labore et dolore magna.</p>
+                        <p>Column flow test paragraph five. Ut enim ad minim veniam quis nostrud.</p>
+                    </div>
+                </div>
+
+                <!-- #57 Arabic RTL -->
+                <div class="pm-issue">
+                    <span class="pm-issue-id">#57</span>
+                    <p class="pm-issue-title">Arabic script and RTL languages</p>
+                    <p class="pm-expect">Expected: Arabic text flows right-to-left, right-aligned.</p>
+                    <div class="pm-rtl">
+                        <p>مرحبا بكم في اختبار اللغة العربية</p>
+                        <p>هذا نص تجريبي لاتجاه الكتابة من اليمين إلى اليسار</p>
+                    </div>
+                </div>
+
+                <!-- #162 / #136 page-break -->
+                <div class="pm-issue">
+                    <span class="pm-issue-id">#162 / #136</span>
+                    <p class="pm-issue-title">page-break is not working</p>
+                    <p class="pm-expect">Expected: pink block on page 1, blue block on page 2 (forced page-break-before).</p>
+                    <div class="pm-page1-block">PAGE 1 - before break (pink)</div>
+                    <div class="pm-page-break-before pm-page2-block">PAGE 2 - after page-break-before (blue)</div>
+                </div>
+
+                <!-- #159 Page number -->
+                <div class="pm-issue">
+                    <span class="pm-issue-id">#159</span>
+                    <p class="pm-issue-title">Page number is ignored</p>
+                    <p class="pm-expect">Expected: page counter in footer area (CSS Paged Media).</p>
+                    <div class="pm-pagenum-footer">
+                        Page <span class="page"/> of <span class="topage"/>
+                        (class="page" / class="topage" - wkhtmltopdf substitution)
+                    </div>
+                </div>
+
+                <!-- #160 Footer -->
+                <div class="pm-issue">
+                    <span class="pm-issue-id">#160</span>
+                    <p class="pm-issue-title">Footer is not rendering correctly</p>
+                    <p class="pm-expect">Expected: document footer block below + company layout footer from external_layout.</p>
+                    <div class="pm-doc-footer">
+                        <strong>Document footer test (#160)</strong><br/>
+                        Order <span t-field="doc.name"/> |
+                        <span t-field="doc.company_id.name"/> |
+                        Generated for Paper Muncher regression testing
+                    </div>
+                </div>
+
+                <!-- filler for multi-page -->
+                <div class="pm-issue">
+                    <span class="pm-issue-id">EXTRA</span>
+                    <p class="pm-issue-title">Long content (multi-page stress)</p>
+                    <p class="pm-expect">Expected: content continues across pages without clipping.</p>
+                    <t t-foreach="range(15)" t-as="i">
+                        <p>Fill paragraph <t t-esc="i + 1"/>:
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                            incididunt ut labore et dolore magna aliqua.</p>
+                    </t>
+                </div>
+
+            </div>
+        </t>
+    </template>
+
+    <record id="action_report_paper_muncher_issues_test" model="ir.actions.report">
+        <field name="name">PM Issues Test (wkhtmltopdf)</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">pdf_tester.report_paper_muncher_issues_test</field>
+        <field name="report_file">pdf_tester.report_paper_muncher_issues_test</field>
+        <field name="print_report_name">'PM-Issues-wkhtml-%s' % (object.name)</field>
+    </record>
+
+    <record id="action_report_paper_muncher_issues_test_pm" model="ir.actions.report">
+        <field name="name">PM Issues Test (Paper Muncher)</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf-paper-muncher</field>
+        <field name="report_name">pdf_tester.report_paper_muncher_issues_test</field>
+        <field name="report_file">pdf_tester.report_paper_muncher_issues_test</field>
+        <field name="print_report_name">'PM-Issues-PM-%s' % (object.name)</field>
+    </record>
+
+</odoo>
