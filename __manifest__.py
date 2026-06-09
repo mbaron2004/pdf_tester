@@ -1,7 +1,7 @@
 {
     "name": "Pdf Tester",
     "summary": "Benchmark PDF generation: wkhtmltopdf vs Paper Muncher on sale orders",
-    "version": "19.0.1.0",
+    "version": "19.4.1.0",
     "category": 'Customization',
     "application": False,
     "installable": True,
