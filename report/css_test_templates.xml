@@ -299,6 +299,63 @@
         <t t-call="web.external_layout">
             <div class="page css-test-extreme">
                 <style>
+                    .css-test-extreme .css-gradient-showcase {
+                        margin-bottom: 24px;
+                        padding: 16px;
+                        border: 4px solid #000;
+                        background: #fff;
+                    }
+                    .css-test-extreme .css-gradient-showcase h3 {
+                        margin: 0 0 12px 0;
+                        text-align: center;
+                        font-size: 1rem;
+                        color: #000;
+                    }
+                    .css-test-extreme .css-grad-row {
+                        margin-bottom: 14px;
+                    }
+                    .css-test-extreme .css-grad-label {
+                        font-size: 0.8rem;
+                        font-weight: bold;
+                        margin-bottom: 4px;
+                        color: #000;
+                    }
+                    .css-test-extreme .css-grad-bar {
+                        height: 50px;
+                        border: 3px solid #000;
+                    }
+                    .css-test-extreme .css-grad-linear-h {
+                        background: linear-gradient(to right, #ff0000 0%, #ff8800 25%, #ffff00 50%, #00cc00 75%, #0000ff 100%);
+                    }
+                    .css-test-extreme .css-grad-linear-v {
+                        height: 80px;
+                        background: linear-gradient(to bottom, #ff00ff 0%, #8800ff 50%, #0000ff 100%);
+                    }
+                    .css-test-extreme .css-grad-radial {
+                        height: 80px;
+                        background: radial-gradient(circle at center, #ffffff 0%, #ff0000 40%, #000000 100%);
+                    }
+                    .css-test-extreme .css-grad-diagonal {
+                        background: linear-gradient(135deg, #ff0000 0%, #00ff00 50%, #0000ff 100%);
+                    }
+                    .css-test-extreme .css-grad-compare {
+                        display: flex;
+                        gap: 8px;
+                    }
+                    .css-test-extreme .css-grad-compare > div {
+                        flex: 1;
+                        height: 50px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 0.7rem;
+                        font-weight: bold;
+                        border: 3px solid #000;
+                    }
+                    .css-test-extreme .css-grad-solid-red {
+                        background: #ff0000;
+                        color: #fff;
+                    }
                     .css-test-extreme .css-banner {
                         display: flex;
                         justify-content: center;
@@ -308,7 +365,7 @@
                         padding: 20px;
                         border: 3px dashed #714b67;
                         border-radius: 16px;
-                        background: linear-gradient(135deg, #f8f0ff 0%, #ffe8f0 50%, #e8f4ff 100%);
+                        background: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 35%, #6bcb77 70%, #4d96ff 100%);
                         box-shadow: 0 8px 24px rgba(113, 75, 103, 0.2);
                         transform: rotate(-0.5deg);
                     }
@@ -345,8 +402,8 @@
                         grid-column: span 2;
                     }
                     .css-test-extreme .css-grid-cell.highlight {
-                        background: linear-gradient(180deg, #714b67 0%, #9b6b8e 100%);
-                        color: #fff;
+                        background: linear-gradient(180deg, #ff0000 0%, #ff8800 50%, #ffff00 100%);
+                        color: #000;
                         font-weight: bold;
                     }
                     .css-test-extreme .css-split {
@@ -368,7 +425,7 @@
                         position: relative;
                         min-height: 80px;
                         border-radius: 50%;
-                        background: radial-gradient(circle,rgb(210, 50, 167) 0%, #fafafa 70%);
+                        background: radial-gradient(circle at center, #ff0000 0%, #ff00ff 40%, #0000ff 100%);
                         border: 2px solid #714b67;
                     }
                     .css-test-extreme .css-split-right span {
@@ -385,7 +442,7 @@
                         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                     }
                     .css-test-extreme .css-table thead th {
-                        background: linear-gradient(90deg, #714b67, #9b6b8e);
+                        background: linear-gradient(90deg, #ff0000, #00ff00, #0000ff);
                         color: #fff;
                         padding: 10px;
                         text-align: center;
@@ -426,10 +483,37 @@
                     }
                 </style>
 
+                <div class="css-gradient-showcase">
+                    <h3>GRADIENTES — Si ves un solo color plano, el motor NO renderiza gradientes</h3>
+                    <div class="css-grad-row">
+                        <div class="css-grad-label">1) LINEAL horizontal: ROJO → NARANJA → AMARILLO → VERDE → AZUL</div>
+                        <div class="css-grad-bar css-grad-linear-h"/>
+                    </div>
+                    <div class="css-grad-row">
+                        <div class="css-grad-label">2) LINEAL vertical: MAGENTA → MORADO → AZUL</div>
+                        <div class="css-grad-bar css-grad-linear-v"/>
+                    </div>
+                    <div class="css-grad-row">
+                        <div class="css-grad-label">3) RADIAL: centro BLANCO → ROJO → negro en bordes (círculo derecho abajo)</div>
+                        <div class="css-grad-bar css-grad-radial"/>
+                    </div>
+                    <div class="css-grad-row">
+                        <div class="css-grad-label">4) DIAGONAL 135°: ROJO → VERDE → AZUL</div>
+                        <div class="css-grad-bar css-grad-diagonal"/>
+                    </div>
+                    <div class="css-grad-row">
+                        <div class="css-grad-label">5) Comparación: izquierda = ROJO SÓLIDO | derecha = gradiente RGB</div>
+                        <div class="css-grad-compare">
+                            <div class="css-grad-solid-red">SÓLIDO #ff0000</div>
+                            <div class="css-grad-bar css-grad-linear-h"/>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="css-banner">
                     <div class="css-banner-inner">
                         <h2>CSS Test — Extreme</h2>
-                        <p>Grid + gradient + flex + shadows + transform</p>
+                        <p><strong>Banner = gradiente diagonal (rojo→amarillo→verde→azul)</strong></p>
                         <p>Order <span t-field="doc.name"/></p>
                     </div>
                 </div>
@@ -488,6 +572,7 @@
                         </table>
                     </div>
                     <div class="css-split-right">
+                        <span>GRADIENTE RADIAL</span>
                         <span t-esc="len(doc.order_line)"/> lines
                     </div>
                 </div>
@@ -529,6 +614,38 @@
         <t t-call="web.external_layout">
             <div class="page css-test-ultra">
                 <style>
+                    .css-test-ultra .css-gradient-showcase {
+                        margin-bottom: 20px;
+                        padding: 16px;
+                        border: 4px solid #000;
+                    }
+                    .css-test-ultra .css-gradient-showcase h3 {
+                        margin: 0 0 12px 0;
+                        text-align: center;
+                        color: #000;
+                    }
+                    .css-test-ultra .css-grad-label {
+                        font-weight: bold;
+                        font-size: 0.8rem;
+                        margin-bottom: 4px;
+                        color: #000;
+                    }
+                    .css-test-ultra .css-grad-bar {
+                        height: 55px;
+                        margin-bottom: 12px;
+                        border: 3px solid #000;
+                    }
+                    .css-test-ultra .css-grad-rgb-h {
+                        background: linear-gradient(to right, #ff0000, #ff8800, #ffff00, #00cc00, #0000ff);
+                    }
+                    .css-test-ultra .css-grad-conic {
+                        height: 100px;
+                        background: conic-gradient(from 0deg, #ff0000 0deg, #ffff00 90deg, #00ff00 180deg, #0000ff 270deg, #ff0000 360deg);
+                    }
+                    .css-test-ultra .css-grad-radial-big {
+                        height: 100px;
+                        background: radial-gradient(ellipse at center, #ffffff 0%, #ff00ff 30%, #0000ff 60%, #000000 100%);
+                    }
                     .css-test-ultra .css-mega-header {
                         display: grid;
                         grid-template-columns: 1fr 2fr 1fr;
@@ -538,8 +655,9 @@
                         margin-bottom: 16px;
                         padding: 16px;
                         border-radius: 20px;
-                        background: conic-gradient(from 180deg, #f8f0ff, #ffe8f0, #e8f4ff, #f0fff4, #f8f0ff);
-                        box-shadow: 0 12px 32px rgba(113, 75, 103, 0.25), inset 0 0 0 2px rgba(113, 75, 103, 0.15);
+                        border: 4px solid #000;
+                        background: conic-gradient(from 0deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+                        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
                         transform: perspective(800px) rotateX(2deg);
                     }
                     .css-test-ultra .css-mega-badge {
@@ -550,7 +668,7 @@
                         width: 72px;
                         height: 72px;
                         border-radius: 50%;
-                        background: radial-gradient(circle at 30% 30%, #fff 0%, #714b67 80%);
+                        background: radial-gradient(circle at 30% 30%, #ffffff 0%, #ff0000 50%, #000000 100%);
                         color: #fff;
                         font-weight: bold;
                         font-size: 0.65rem;
@@ -572,9 +690,10 @@
                         font-size: 1.6rem;
                         letter-spacing: 0.15em;
                         text-transform: uppercase;
-                        background: linear-gradient(90deg, #714b67, #c44d8c, #714b67);
-                        -webkit-background-clip: text;
-                        color: #714b67;
+                        color: #000;
+                        background: #ffffff;
+                        padding: 4px 12px;
+                        border: 2px solid #000;
                     }
                     .css-test-ultra .css-mega-stats {
                         grid-area: stats;
@@ -614,12 +733,13 @@
                         background-clip: padding-box;
                     }
                     .css-test-ultra .css-arena-a {
-                        background: linear-gradient(135deg, #714b67 0%, #9b6b8e 100%);
+                        background: linear-gradient(135deg, #ff0000 0%, #00ff00 50%, #0000ff 100%);
                         color: #fff;
+                        text-shadow: 1px 1px 2px #000;
                         transform: skewX(-3deg);
                     }
                     .css-test-ultra .css-arena-b {
-                        background: repeating-linear-gradient(45deg, #f5f0f4, #f5f0f4 4px, #e8d5e3 4px, #e8d5e3 8px);
+                        background: repeating-linear-gradient(45deg, #ff0000, #ff0000 8px, #ffff00 8px, #ffff00 16px);
                     }
                     .css-test-ultra .css-arena-c {
                         writing-mode: vertical-rl;
@@ -629,7 +749,8 @@
                     }
                     .css-test-ultra .css-arena-d {
                         border-radius: 50% 10% 50% 10%;
-                        background: #e8f4ff;
+                        background: radial-gradient(circle, #00ffff 0%, #0000ff 100%);
+                        color: #fff;
                         filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.15));
                     }
                     .css-test-ultra .css-arena-e {
@@ -703,7 +824,7 @@
                         box-shadow: 0 6px 20px rgba(113, 75, 103, 0.2);
                     }
                     .css-test-ultra .css-ultra-table thead th {
-                        background: linear-gradient(180deg, #4a2f42 0%, #714b67 50%, #9b6b8e 100%);
+                        background: linear-gradient(180deg, #ff0000 0%, #00ff00 50%, #0000ff 100%);
                         color: #fff;
                         padding: 10px 6px;
                         text-align: center;
@@ -718,7 +839,7 @@
                         border-bottom: 1px solid #eee;
                     }
                     .css-test-ultra .css-ultra-table tbody tr:nth-child(odd) {
-                        background: linear-gradient(90deg, #fff 0%, #fdf5fa 50%, #fff 100%);
+                        background: linear-gradient(90deg, #ffcccc 0%, #ccffcc 50%, #ccccff 100%);
                     }
                     .css-test-ultra .css-ultra-table tbody tr:nth-child(even) {
                         background: #f9f9f9;
@@ -750,7 +871,7 @@
                         height: 100%;
                         padding: 12px;
                         border-radius: 16px;
-                        background: linear-gradient(160deg, #714b67 0%, transparent 60%);
+                        background: linear-gradient(160deg, #ff0000 0%, #0000ff 100%);
                         color: #fff;
                         text-align: center;
                     }
@@ -782,10 +903,21 @@
                     }
                 </style>
 
+                <div class="css-gradient-showcase">
+                    <h3>ULTRAEXTREME — Mapa de gradientes (colores planos = motor sin soporte)</h3>
+                    <div class="css-grad-label">A) LINEAL RGB horizontal (debe verse arcoíris)</div>
+                    <div class="css-grad-bar css-grad-rgb-h"/>
+                    <div class="css-grad-label">B) CÓNICO — sectores ROJO / AMARILLO / VERDE / AZUL / MAGENTA (wkhtmltopdf suele fallar)</div>
+                    <div class="css-grad-bar css-grad-conic"/>
+                    <div class="css-grad-label">C) RADIAL elíptico — centro blanco → magenta → azul → negro</div>
+                    <div class="css-grad-bar css-grad-radial-big"/>
+                </div>
+
                 <div class="css-mega-header">
-                    <div class="css-mega-badge">ULTRA</div>
+                    <div class="css-mega-badge">GRADIENTE RADIAL</div>
                     <div class="css-mega-title">
                         <h2>CSS Ultraextreme</h2>
+                        <p><strong>Cabecera = CONIC-GRADIENT (arcoíris circular)</strong></p>
                         <p>Order <span t-field="doc.name"/> — <span t-field="doc.partner_id.name"/></p>
                     </div>
                     <div class="css-mega-stats">
@@ -796,14 +928,14 @@
 
                 <div class="css-arena">
                     <div class="css-arena-cell css-arena-a">
-                        <span t-field="doc.partner_id.name"/>
+                        GRADIENTE DIAGONAL<br/><span t-field="doc.partner_id.name"/>
                     </div>
                     <div class="css-arena-cell css-arena-b">
-                        <span t-field="doc.date_order" t-options="{'widget': 'date'}"/>
+                        REPEATING-GRADIENT<br/><span t-field="doc.date_order" t-options="{'widget': 'date'}"/>
                     </div>
                     <div class="css-arena-cell css-arena-c">ULTRA</div>
                     <div class="css-arena-cell css-arena-d">
-                        <span t-field="doc.state"/>
+                        RADIAL<br/><span t-field="doc.state"/>
                     </div>
                     <div class="css-arena-cell css-arena-e">
                         <span class="css-pill" style="--rot: -4deg;">grid-areas</span>
