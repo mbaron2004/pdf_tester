@@ -58,11 +58,11 @@ class PdfBenchmarkWizard(models.TransientModel):
         report = self.env.ref('sale.action_report_saleorder')
         original_report_type = report.report_type
         config_param = self.env['ir.config_parameter'].sudo()
-        original_report_url = config_param.get_param('report.url')
+        original_report_url = config_param.get_str('report.url')
         report_url_cleared = False
 
         if self.force_pipe_mode and original_report_url:
-            config_param.set_param('report.url', '')
+            config_param.set_str('report.url', '')
             report_url_cleared = True
 
         report.report_type = self._engine_report_type()
@@ -100,7 +100,7 @@ class PdfBenchmarkWizard(models.TransientModel):
         finally:
             report.report_type = original_report_type
             if report_url_cleared:
-                config_param.set_param('report.url', original_report_url or '')
+                config_param.set_str('report.url', original_report_url or '')
 
         elapsed = time.perf_counter() - start
         success_count = len(attachment_vals)
