@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <button name="action_open_css_test_wizard"
+                <button name="action_print_css_test_extreme"
                         type="object"
                         string="Imprimir test CSS"
                         groups="sales_team.group_sale_salesman"/>
