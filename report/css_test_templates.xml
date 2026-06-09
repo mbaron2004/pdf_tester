@@ -368,7 +368,7 @@
                         position: relative;
                         min-height: 80px;
                         border-radius: 50%;
-                        background: radial-gradient(circle, #e8d5e3 0%, #fafafa 70%);
+                        background: radial-gradient(circle,rgb(210, 50, 167) 0%, #fafafa 70%);
                         border: 2px solid #714b67;
                     }
                     .css-test-extreme .css-split-right span {
