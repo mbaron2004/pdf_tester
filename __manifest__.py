@@ -9,6 +9,7 @@
     "data": [
         'security/ir.model.access.csv',
         'report/css_test_templates.xml',
+        'report/sale_quotation_professional.xml',
         'views/sale_order_views.xml',
         'views/pdf_benchmark_wizard_views.xml',
     ],

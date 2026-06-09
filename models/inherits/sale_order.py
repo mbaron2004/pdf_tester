@@ -8,3 +8,8 @@ class SaleOrder(models.Model):
         self.ensure_one()
         report = self.env.ref('pdf_tester.action_report_css_test_extreme')
         return report.report_action(self)
+
+    def action_print_professional_quotation(self):
+        self.ensure_one()
+        report = self.env.ref('pdf_tester.action_report_sale_quotation_professional')
+        return report.report_action(self)

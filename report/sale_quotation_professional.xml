@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_sale_quotation_professional">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="pdf_tester.report_sale_quotation_professional_document"
+                   t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_sale_quotation_professional_document">
+        <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
+        <t t-set="is_quotation" t-value="doc.state in ('draft', 'sent')"/>
+        <t t-call="web.external_layout">
+            <div class="page prof-quote">
+                <style>
+                    .prof-quote {
+                        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                        font-size: 10pt;
+                        color: #2c2c2c;
+                        line-height: 1.45;
+                    }
+                    .prof-quote .pq-cover {
+                        text-align: center;
+                        padding: 28px 20px 32px;
+                        margin-bottom: 28px;
+                        border-bottom: 3px solid #714b67;
+                    }
+                    .prof-quote .pq-doc-type {
+                        font-size: 0.75rem;
+                        letter-spacing: 0.25em;
+                        text-transform: uppercase;
+                        color: #714b67;
+                        margin-bottom: 8px;
+                    }
+                    .prof-quote .pq-title {
+                        font-size: 1.75rem;
+                        font-weight: 700;
+                        color: #1a1a1a;
+                        margin: 0 0 6px 0;
+                    }
+                    .prof-quote .pq-ref {
+                        font-size: 1.1rem;
+                        color: #555;
+                        margin: 0;
+                    }
+                    .prof-quote .pq-meta-row {
+                        display: flex;
+                        justify-content: center;
+                        gap: 32px;
+                        margin-top: 16px;
+                        font-size: 0.85rem;
+                        color: #666;
+                    }
+                    .prof-quote .pq-chapter {
+                        margin-bottom: 24px;
+                        page-break-inside: avoid;
+                    }
+                    .prof-quote .pq-chapter-title {
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        margin: 0 0 14px 0;
+                        padding-bottom: 8px;
+                        border-bottom: 2px solid #e8e0e6;
+                    }
+                    .prof-quote .pq-chapter-num {
+                        display: inline-flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-width: 32px;
+                        height: 32px;
+                        border-radius: 4px;
+                        background: #714b67;
+                        color: #fff;
+                        font-size: 0.85rem;
+                        font-weight: 700;
+                    }
+                    .prof-quote .pq-chapter-label {
+                        font-size: 1.05rem;
+                        font-weight: 700;
+                        color: #714b67;
+                        text-transform: uppercase;
+                        letter-spacing: 0.06em;
+                    }
+                    .prof-quote .pq-section {
+                        margin-bottom: 14px;
+                    }
+                    .prof-quote .pq-section-title {
+                        font-size: 0.8rem;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 0.08em;
+                        color: #888;
+                        margin: 0 0 6px 0;
+                        padding-left: 8px;
+                        border-left: 3px solid #714b67;
+                    }
+                    .prof-quote .pq-two-cols {
+                        display: flex;
+                        gap: 24px;
+                    }
+                    .prof-quote .pq-col {
+                        flex: 1;
+                    }
+                    .prof-quote .pq-info-box {
+                        padding: 12px 14px;
+                        background: #faf8fa;
+                        border: 1px solid #e8e0e6;
+                        border-radius: 6px;
+                    }
+                    .prof-quote .pq-info-box p {
+                        margin: 0 0 4px 0;
+                    }
+                    .prof-quote .pq-lines-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 4px;
+                    }
+                    .prof-quote .pq-lines-table thead th {
+                        background: #714b67;
+                        color: #fff;
+                        padding: 10px 8px;
+                        font-size: 0.75rem;
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                        text-align: left;
+                    }
+                    .prof-quote .pq-lines-table thead th.pq-num,
+                    .prof-quote .pq-lines-table thead th.pq-qty,
+                    .prof-quote .pq-lines-table thead th.pq-price,
+                    .prof-quote .pq-lines-table thead th.pq-disc,
+                    .prof-quote .pq-lines-table thead th.pq-sub {
+                        text-align: right;
+                    }
+                    .prof-quote .pq-lines-table tbody td {
+                        padding: 9px 8px;
+                        border-bottom: 1px solid #eee;
+                        vertical-align: top;
+                    }
+                    .prof-quote .pq-lines-table tbody tr:nth-child(even) {
+                        background: #fafafa;
+                    }
+                    .prof-quote .pq-lines-table .pq-num,
+                    .prof-quote .pq-lines-table .pq-qty,
+                    .prof-quote .pq-lines-table .pq-price,
+                    .prof-quote .pq-lines-table .pq-disc,
+                    .prof-quote .pq-lines-table .pq-sub {
+                        text-align: right;
+                        white-space: nowrap;
+                    }
+                    .prof-quote .pq-line-desc {
+                        font-size: 0.8rem;
+                        color: #777;
+                        margin-top: 2px;
+                    }
+                    .prof-quote .pq-totals-wrap {
+                        display: flex;
+                        justify-content: flex-end;
+                        margin-top: 8px;
+                    }
+                    .prof-quote .pq-totals {
+                        width: 280px;
+                        border: 2px solid #714b67;
+                        border-radius: 6px;
+                        overflow: hidden;
+                    }
+                    .prof-quote .pq-totals-row {
+                        display: flex;
+                        justify-content: space-between;
+                        padding: 8px 14px;
+                        border-bottom: 1px solid #e8e0e6;
+                    }
+                    .prof-quote .pq-totals-row:last-child {
+                        border-bottom: none;
+                        background: #714b67;
+                        color: #fff;
+                        font-weight: 700;
+                        font-size: 1.05rem;
+                    }
+                    .prof-quote .pq-terms {
+                        padding: 14px;
+                        background: #f5f5f5;
+                        border-left: 4px solid #714b67;
+                        font-size: 0.85rem;
+                        color: #555;
+                    }
+                    .prof-quote .pq-terms p {
+                        margin: 0 0 6px 0;
+                    }
+                    .prof-quote .pq-signature {
+                        margin-top: 32px;
+                        display: flex;
+                        justify-content: space-between;
+                        gap: 40px;
+                    }
+                    .prof-quote .pq-sig-block {
+                        flex: 1;
+                        text-align: center;
+                    }
+                    .prof-quote .pq-sig-line {
+                        border-top: 1px solid #999;
+                        margin-top: 48px;
+                        padding-top: 6px;
+                        font-size: 0.8rem;
+                        color: #666;
+                    }
+                </style>
+
+                <!-- Portada / titulo documento -->
+                <div class="pq-cover">
+                    <div class="pq-doc-type">
+                        <t t-if="is_quotation">Documento comercial</t>
+                        <t t-else="">Confirmacion de pedido</t>
+                    </div>
+                    <h1 class="pq-title">
+                        <t t-if="is_quotation">Presupuesto</t>
+                        <t t-else="">Pedido de venta</t>
+                    </h1>
+                    <p class="pq-ref">
+                        Referencia: <span t-field="doc.name"/>
+                    </p>
+                    <div class="pq-meta-row">
+                        <span>Fecha: <span t-field="doc.date_order" t-options="{'widget': 'date'}"/></span>
+                        <span t-if="doc.validity_date">
+                            Validez: <span t-field="doc.validity_date" t-options="{'widget': 'date'}"/>
+                        </span>
+                        <span t-if="doc.user_id">
+                            Comercial: <span t-field="doc.user_id.name"/>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Capitulo 1: Cliente -->
+                <div class="pq-chapter">
+                    <h2 class="pq-chapter-title">
+                        <span class="pq-chapter-num">1</span>
+                        <span class="pq-chapter-label">Datos del cliente</span>
+                    </h2>
+                    <div class="pq-two-cols">
+                        <div class="pq-col">
+                            <div class="pq-section">
+                                <h3 class="pq-section-title">Cliente</h3>
+                                <div class="pq-info-box">
+                                    <p><strong t-field="doc.partner_id.name"/></p>
+                                    <div t-field="doc.partner_id"
+                                         t-options='{"widget": "contact", "fields": ["address", "phone", "email"], "no_marker": True}'/>
+                                    <p t-if="doc.partner_id.vat">
+                                        NIF/CIF: <span t-field="doc.partner_id.vat"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pq-col">
+                            <div class="pq-section" t-if="doc.partner_invoice_id and doc.partner_invoice_id != doc.partner_id">
+                                <h3 class="pq-section-title">Direccion de facturacion</h3>
+                                <div class="pq-info-box">
+                                    <div t-field="doc.partner_invoice_id"
+                                         t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                </div>
+                            </div>
+                            <div class="pq-section" t-if="doc.partner_shipping_id and doc.partner_shipping_id != doc.partner_invoice_id">
+                                <h3 class="pq-section-title">Direccion de entrega</h3>
+                                <div class="pq-info-box">
+                                    <div t-field="doc.partner_shipping_id"
+                                         t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                </div>
+                            </div>
+                            <div class="pq-section" t-if="doc.client_order_ref">
+                                <h3 class="pq-section-title">Referencia cliente</h3>
+                                <div class="pq-info-box">
+                                    <p t-field="doc.client_order_ref"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Capitulo 2: Lineas -->
+                <div class="pq-chapter">
+                    <h2 class="pq-chapter-title">
+                        <span class="pq-chapter-num">2</span>
+                        <span class="pq-chapter-label">Detalle de productos y servicios</span>
+                    </h2>
+                    <table class="pq-lines-table">
+                        <thead>
+                            <tr>
+                                <th class="pq-num" style="width: 4%;">#</th>
+                                <th style="width: 40%;">Descripcion</th>
+                                <th class="pq-qty" style="width: 10%;">Cant.</th>
+                                <th class="pq-price" style="width: 14%;">P. unit.</th>
+                                <th class="pq-disc" style="width: 8%;">Dto.%</th>
+                                <th class="pq-sub" style="width: 14%;">Importe</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc.order_line" t-as="line">
+                                <tr>
+                                    <td class="pq-num"><span t-esc="line_index + 1"/></td>
+                                    <td><span t-field="line.name"/></td>
+                                    <td class="pq-qty">
+                                        <span t-field="line.product_uom_qty"/>
+                                        <span t-field="line.product_uom_id.name" groups="uom.group_uom"/>
+                                    </td>
+                                    <td class="pq-price"><span t-field="line.price_unit"/></td>
+                                    <td class="pq-disc"><span t-field="line.discount"/></td>
+                                    <td class="pq-sub"><span t-field="line.price_subtotal"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Capitulo 3: Resumen economico -->
+                <div class="pq-chapter">
+                    <h2 class="pq-chapter-title">
+                        <span class="pq-chapter-num">3</span>
+                        <span class="pq-chapter-label">Resumen economico</span>
+                    </h2>
+                    <div class="pq-section">
+                        <h3 class="pq-section-title">Desglose de importes</h3>
+                        <div class="pq-totals-wrap">
+                            <div class="pq-totals">
+                                <div class="pq-totals-row">
+                                    <span>Base imponible</span>
+                                    <span t-field="doc.amount_untaxed"/>
+                                </div>
+                                <div class="pq-totals-row">
+                                    <span>Impuestos</span>
+                                    <span t-field="doc.amount_tax"/>
+                                </div>
+                                <div class="pq-totals-row">
+                                    <span>Total</span>
+                                    <span t-field="doc.amount_total"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pq-section" t-if="doc.payment_term_id">
+                        <h3 class="pq-section-title">Condiciones de pago</h3>
+                        <div class="pq-info-box">
+                            <p t-field="doc.payment_term_id.note"
+                               t-if="doc.payment_term_id.note"/>
+                            <p t-if="not doc.payment_term_id.note">
+                                <span t-field="doc.payment_term_id.name"/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Capitulo 4: Condiciones -->
+                <div class="pq-chapter">
+                    <h2 class="pq-chapter-title">
+                        <span class="pq-chapter-num">4</span>
+                        <span class="pq-chapter-label">Condiciones y observaciones</span>
+                    </h2>
+                    <div class="pq-section" t-if="doc.note">
+                        <h3 class="pq-section-title">Notas</h3>
+                        <div class="pq-terms">
+                            <p t-field="doc.note"/>
+                        </div>
+                    </div>
+                    <div class="pq-section">
+                        <h3 class="pq-section-title">Condiciones generales</h3>
+                        <div class="pq-terms">
+                            <p t-if="is_quotation">
+                                Este presupuesto tiene una validez limitada segun la fecha indicada.
+                                Los precios no incluyen gastos adicionales no especificados expresamente.
+                            </p>
+                            <p>
+                                Documento generado electronicamente. Para cualquier consulta,
+                                contacte con su comercial asignado.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="pq-signature">
+                        <div class="pq-sig-block">
+                            <div class="pq-sig-line">Firma del cliente</div>
+                        </div>
+                        <div class="pq-sig-block">
+                            <div class="pq-sig-line">
+                                <span t-field="doc.company_id.name"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </t>
+    </template>
+
+    <record id="action_report_sale_quotation_professional" model="ir.actions.report">
+        <field name="name">Presupuesto profesional</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">pdf_tester.report_sale_quotation_professional</field>
+        <field name="report_file">pdf_tester.report_sale_quotation_professional</field>
+        <field name="print_report_name">
+            (object.state in ('draft', 'sent') and 'Presupuesto-%s' % (object.name)) or 'Pedido-%s' % (object.name)
+        </field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>
