@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ================================================================== -->
+    <!-- TEMPLATE 1: BASIC — simple centering + plain table                   -->
+    <!-- ================================================================== -->
+
+    <template id="report_css_test_basic">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="pdf_tester.report_css_test_basic_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_css_test_basic_document">
+        <t t-call="web.external_layout">
+            <div class="page css-test-basic">
+                <style>
+                    .css-test-basic .css-header {
+                        text-align: center;
+                        margin-bottom: 24px;
+                        padding: 16px;
+                        border-bottom: 2px solid #714b67;
+                    }
+                    .css-test-basic .css-header h2 {
+                        margin: 0;
+                        color: #714b67;
+                    }
+                    .css-test-basic .css-meta {
+                        text-align: center;
+                        margin-bottom: 20px;
+                        font-size: 0.9rem;
+                        color: #555;
+                    }
+                    .css-test-basic .css-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin: 0 auto;
+                    }
+                    .css-test-basic .css-table th,
+                    .css-test-basic .css-table td {
+                        border: 1px solid #ccc;
+                        padding: 8px 12px;
+                        text-align: center;
+                    }
+                    .css-test-basic .css-table th {
+                        background: #f0f0f0;
+                    }
+                    .css-test-basic .css-total {
+                        text-align: center;
+                        margin-top: 20px;
+                        font-size: 1.1rem;
+                        font-weight: bold;
+                    }
+                </style>
+
+                <div class="css-header">
+                    <h2>CSS Test — Basic</h2>
+                    <p>Order <span t-field="doc.name"/></p>
+                </div>
+
+                <div class="css-meta">
+                    <p>Customer: <span t-field="doc.partner_id.name"/></p>
+                    <p>Date: <span t-field="doc.date_order" t-options="{'widget': 'date'}"/></p>
+                </div>
+
+                <table class="css-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Qty</th>
+                            <th>Unit Price</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="doc.order_line" t-as="line">
+                            <tr>
+                                <td><span t-field="line.name"/></td>
+                                <td><span t-field="line.product_uom_qty"/></td>
+                                <td><span t-field="line.price_unit"/></td>
+                                <td><span t-field="line.price_subtotal"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+                <div class="css-total">
+                    Total: <span t-field="doc.amount_total"/>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <record id="action_report_css_test_basic" model="ir.actions.report">
+        <field name="name">CSS Test — Basic</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">pdf_tester.report_css_test_basic</field>
+        <field name="report_file">pdf_tester.report_css_test_basic</field>
+        <field name="print_report_name">'CSS-Test-Basic-%s' % (object.name)</field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- TEMPLATE 2: ADVANCED — flexbox centering, columns, styled table    -->
+    <!-- ================================================================== -->
+
+    <template id="report_css_test_advanced">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="pdf_tester.report_css_test_advanced_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_css_test_advanced_document">
+        <t t-call="web.external_layout">
+            <div class="page css-test-advanced">
+                <style>
+                    .css-test-advanced .css-hero {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-height: 100px;
+                        background: #714b67;
+                        color: #fff;
+                        border-radius: 8px;
+                        margin-bottom: 24px;
+                    }
+                    .css-test-advanced .css-hero-inner {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        text-align: center;
+                        padding: 16px;
+                    }
+                    .css-test-advanced .css-hero h2 {
+                        margin: 0 0 4px 0;
+                    }
+                    .css-test-advanced .css-columns {
+                        display: flex;
+                        justify-content: space-between;
+                        gap: 16px;
+                        margin-bottom: 24px;
+                    }
+                    .css-test-advanced .css-col {
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        text-align: center;
+                        padding: 16px;
+                        border: 1px solid #ddd;
+                        border-radius: 8px;
+                        background: #fafafa;
+                    }
+                    .css-test-advanced .css-col-label {
+                        font-size: 0.75rem;
+                        text-transform: uppercase;
+                        letter-spacing: 0.1em;
+                        color: #888;
+                        margin-bottom: 4px;
+                    }
+                    .css-test-advanced .css-table-wrap {
+                        display: flex;
+                        justify-content: center;
+                        width: 100%;
+                    }
+                    .css-test-advanced .css-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+                    .css-test-advanced .css-table thead th {
+                        background: #714b67;
+                        color: #fff;
+                        padding: 10px;
+                        text-align: center;
+                    }
+                    .css-test-advanced .css-table tbody tr:nth-child(even) {
+                        background: #f5f0f4;
+                    }
+                    .css-test-advanced .css-table tbody td {
+                        padding: 8px 10px;
+                        text-align: center;
+                        border-bottom: 1px solid #e0e0e0;
+                    }
+                    .css-test-advanced .css-table tfoot td {
+                        padding: 12px 10px;
+                        text-align: right;
+                        font-weight: bold;
+                        border-top: 2px solid #714b67;
+                    }
+                    .css-test-advanced .css-badge-row {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 12px;
+                        margin-top: 20px;
+                    }
+                    .css-test-advanced .css-badge {
+                        display: inline-flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 6px 16px;
+                        border-radius: 20px;
+                        background: #e8d5e3;
+                        color: #714b67;
+                        font-size: 0.85rem;
+                    }
+                </style>
+
+                <div class="css-hero">
+                    <div class="css-hero-inner">
+                        <h2>CSS Test — Advanced</h2>
+                        <p>Flexbox centering + styled table</p>
+                    </div>
+                </div>
+
+                <div class="css-columns">
+                    <div class="css-col">
+                        <span class="css-col-label">Order</span>
+                        <strong t-field="doc.name"/>
+                    </div>
+                    <div class="css-col">
+                        <span class="css-col-label">Customer</span>
+                        <strong t-field="doc.partner_id.name"/>
+                    </div>
+                    <div class="css-col">
+                        <span class="css-col-label">Total</span>
+                        <strong t-field="doc.amount_total"/>
+                    </div>
+                </div>
+
+                <div class="css-table-wrap">
+                    <table class="css-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Description</th>
+                                <th>Qty</th>
+                                <th>Unit Price</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc.order_line" t-as="line">
+                                <tr>
+                                    <td><span t-field="line.product_id.name"/></td>
+                                    <td><span t-field="line.name"/></td>
+                                    <td><span t-field="line.product_uom_qty"/></td>
+                                    <td><span t-field="line.price_unit"/></td>
+                                    <td><span t-field="line.price_subtotal"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4">Amount Total</td>
+                                <td><span t-field="doc.amount_total"/></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="css-badge-row">
+                    <span class="css-badge">flex center</span>
+                    <span class="css-badge">zebra table</span>
+                    <span class="css-badge">3 columns</span>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <record id="action_report_css_test_advanced" model="ir.actions.report">
+        <field name="name">CSS Test — Advanced</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">pdf_tester.report_css_test_advanced</field>
+        <field name="report_file">pdf_tester.report_css_test_advanced</field>
+        <field name="print_report_name">'CSS-Test-Advanced-%s' % (object.name)</field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- TEMPLATE 3: EXTREME — grid, gradients, shadows, nested layout      -->
+    <!-- ================================================================== -->
+
+    <template id="report_css_test_extreme">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="pdf_tester.report_css_test_extreme_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_css_test_extreme_document">
+        <t t-call="web.external_layout">
+            <div class="page css-test-extreme">
+                <style>
+                    .css-test-extreme .css-banner {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-height: 120px;
+                        margin-bottom: 20px;
+                        padding: 20px;
+                        border: 3px dashed #714b67;
+                        border-radius: 16px;
+                        background: linear-gradient(135deg, #f8f0ff 0%, #ffe8f0 50%, #e8f4ff 100%);
+                        box-shadow: 0 8px 24px rgba(113, 75, 103, 0.2);
+                        transform: rotate(-0.5deg);
+                    }
+                    .css-test-extreme .css-banner-inner {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        text-align: center;
+                    }
+                    .css-test-extreme .css-banner h2 {
+                        margin: 0;
+                        color: #714b67;
+                    }
+                    .css-test-extreme .css-grid {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr 1fr;
+                        gap: 12px;
+                        margin-bottom: 20px;
+                    }
+                    .css-test-extreme .css-grid-cell {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-height: 64px;
+                        padding: 12px;
+                        border: 1px solid rgba(113, 75, 103, 0.3);
+                        border-radius: 10px;
+                        background: rgba(255, 255, 255, 0.7);
+                        text-align: center;
+                        font-size: 0.85rem;
+                    }
+                    .css-test-extreme .css-grid-cell.span-2 {
+                        grid-column: span 2;
+                    }
+                    .css-test-extreme .css-grid-cell.highlight {
+                        background: linear-gradient(180deg, #714b67 0%, #9b6b8e 100%);
+                        color: #fff;
+                        font-weight: bold;
+                    }
+                    .css-test-extreme .css-split {
+                        display: flex;
+                        gap: 16px;
+                        margin-bottom: 20px;
+                    }
+                    .css-test-extreme .css-split-left {
+                        flex: 2;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                    }
+                    .css-test-extreme .css-split-right {
+                        flex: 1;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        position: relative;
+                        min-height: 80px;
+                        border-radius: 50%;
+                        background: radial-gradient(circle, #e8d5e3 0%, #fafafa 70%);
+                        border: 2px solid #714b67;
+                    }
+                    .css-test-extreme .css-split-right span {
+                        font-size: 1.4rem;
+                        font-weight: bold;
+                        color: #714b67;
+                    }
+                    .css-test-extreme .css-table {
+                        width: 100%;
+                        border-collapse: separate;
+                        border-spacing: 0;
+                        border-radius: 8px;
+                        overflow: hidden;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                    }
+                    .css-test-extreme .css-table thead th {
+                        background: linear-gradient(90deg, #714b67, #9b6b8e);
+                        color: #fff;
+                        padding: 10px;
+                        text-align: center;
+                    }
+                    .css-test-extreme .css-table tbody td {
+                        padding: 8px 10px;
+                        text-align: center;
+                        border-bottom: 1px solid #eee;
+                    }
+                    .css-test-extreme .css-table tbody tr:hover {
+                        background: #fdf5fa;
+                    }
+                    .css-test-extreme .css-table tfoot td {
+                        background: #f0e6ed;
+                        padding: 10px;
+                        font-weight: bold;
+                        text-align: right;
+                    }
+                    .css-test-extreme .css-footer-badges {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        gap: 8px;
+                        margin-top: 20px;
+                    }
+                    .css-test-extreme .css-footer-badge {
+                        display: inline-flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 4px 12px;
+                        border-radius: 999px;
+                        background: #714b67;
+                        color: #fff;
+                        font-size: 0.7rem;
+                        letter-spacing: 0.06em;
+                        text-transform: uppercase;
+                    }
+                </style>
+
+                <div class="css-banner">
+                    <div class="css-banner-inner">
+                        <h2>CSS Test — Extreme</h2>
+                        <p>Grid + gradient + flex + shadows + transform</p>
+                        <p>Order <span t-field="doc.name"/></p>
+                    </div>
+                </div>
+
+                <div class="css-grid">
+                    <div class="css-grid-cell highlight">
+                        <span t-field="doc.partner_id.name"/>
+                    </div>
+                    <div class="css-grid-cell">
+                        <span t-field="doc.date_order" t-options="{'widget': 'date'}"/>
+                    </div>
+                    <div class="css-grid-cell">
+                        State: <span t-field="doc.state"/>
+                    </div>
+                    <div class="css-grid-cell span-2">
+                        Untaxed: <span t-field="doc.amount_untaxed"/>
+                    </div>
+                    <div class="css-grid-cell highlight">
+                        <span t-field="doc.amount_total"/>
+                    </div>
+                </div>
+
+                <div class="css-split">
+                    <div class="css-split-left">
+                        <table class="css-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Product</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="doc.order_line" t-as="line">
+                                    <tr>
+                                        <td><span t-esc="line_index + 1"/></td>
+                                        <td><span t-field="line.name"/></td>
+                                        <td><span t-field="line.product_uom_qty"/></td>
+                                        <td><span t-field="line.price_unit"/></td>
+                                        <td><span t-field="line.price_subtotal"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4">Taxes</td>
+                                    <td><span t-field="doc.amount_tax"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">Total</td>
+                                    <td><span t-field="doc.amount_total"/></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="css-split-right">
+                        <span t-esc="len(doc.order_line)"/> lines
+                    </div>
+                </div>
+
+                <div class="css-footer-badges">
+                    <span class="css-footer-badge">grid</span>
+                    <span class="css-footer-badge">flex</span>
+                    <span class="css-footer-badge">gradient</span>
+                    <span class="css-footer-badge">shadow</span>
+                    <span class="css-footer-badge">transform</span>
+                    <span class="css-footer-badge">radial</span>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <record id="action_report_css_test_extreme" model="ir.actions.report">
+        <field name="name">CSS Test — Extreme</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">pdf_tester.report_css_test_extreme</field>
+        <field name="report_file">pdf_tester.report_css_test_extreme</field>
+        <field name="print_report_name">'CSS-Test-Extreme-%s' % (object.name)</field>
+    </record>
+
+</odoo>

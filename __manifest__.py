@@ -8,7 +8,9 @@
     "depends": ['sale', 'base_report_paper_muncher'],
     "data": [
         'security/ir.model.access.csv',
-        'report/sale_report_templates.xml',
+        'report/css_test_templates.xml',
+        'views/css_test_print_wizard_views.xml',
+        'views/sale_order_views.xml',
         'views/pdf_benchmark_wizard_views.xml',
     ],
     'assets': {},
