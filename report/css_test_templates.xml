@@ -513,4 +513,401 @@
         <field name="print_report_name">'CSS-Test-Extreme-%s' % (object.name)</field>
     </record>
 
+    <!-- ================================================================== -->
+    <!-- TEMPLATE 4: ULTRAEXTREME — everything thrown at the PDF engine     -->
+    <!-- ================================================================== -->
+
+    <template id="report_css_test_ultraextreme">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="pdf_tester.report_css_test_ultraextreme_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_css_test_ultraextreme_document">
+        <t t-call="web.external_layout">
+            <div class="page css-test-ultra">
+                <style>
+                    .css-test-ultra .css-mega-header {
+                        display: grid;
+                        grid-template-columns: 1fr 2fr 1fr;
+                        grid-template-areas: "badge title stats";
+                        gap: 10px;
+                        align-items: center;
+                        margin-bottom: 16px;
+                        padding: 16px;
+                        border-radius: 20px;
+                        background: conic-gradient(from 180deg, #f8f0ff, #ffe8f0, #e8f4ff, #f0fff4, #f8f0ff);
+                        box-shadow: 0 12px 32px rgba(113, 75, 103, 0.25), inset 0 0 0 2px rgba(113, 75, 103, 0.15);
+                        transform: perspective(800px) rotateX(2deg);
+                    }
+                    .css-test-ultra .css-mega-badge {
+                        grid-area: badge;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 72px;
+                        height: 72px;
+                        border-radius: 50%;
+                        background: radial-gradient(circle at 30% 30%, #fff 0%, #714b67 80%);
+                        color: #fff;
+                        font-weight: bold;
+                        font-size: 0.65rem;
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                        transform: rotate(-12deg);
+                        box-shadow: 4px 4px 0 #4a2f42;
+                    }
+                    .css-test-ultra .css-mega-title {
+                        grid-area: title;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        text-align: center;
+                    }
+                    .css-test-ultra .css-mega-title h2 {
+                        margin: 0;
+                        font-size: 1.6rem;
+                        letter-spacing: 0.15em;
+                        text-transform: uppercase;
+                        background: linear-gradient(90deg, #714b67, #c44d8c, #714b67);
+                        -webkit-background-clip: text;
+                        color: #714b67;
+                    }
+                    .css-test-ultra .css-mega-stats {
+                        grid-area: stats;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 4px;
+                        padding: 8px;
+                        border-left: 3px solid #714b67;
+                    }
+                    .css-test-ultra .css-arena {
+                        display: grid;
+                        grid-template-columns: repeat(4, 1fr);
+                        grid-template-rows: auto auto;
+                        grid-template-areas:
+                            "a a b c"
+                            "d e e c";
+                        gap: 8px;
+                        margin-bottom: 16px;
+                    }
+                    .css-test-ultra .css-arena-a { grid-area: a; }
+                    .css-test-ultra .css-arena-b { grid-area: b; }
+                    .css-test-ultra .css-arena-c { grid-area: c; }
+                    .css-test-ultra .css-arena-d { grid-area: d; }
+                    .css-test-ultra .css-arena-e { grid-area: e; }
+                    .css-test-ultra .css-arena-cell {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        text-align: center;
+                        min-height: 56px;
+                        padding: 10px;
+                        border-radius: 12px;
+                        font-size: 0.8rem;
+                        border: 2px solid transparent;
+                        background-clip: padding-box;
+                    }
+                    .css-test-ultra .css-arena-a {
+                        background: linear-gradient(135deg, #714b67 0%, #9b6b8e 100%);
+                        color: #fff;
+                        transform: skewX(-3deg);
+                    }
+                    .css-test-ultra .css-arena-b {
+                        background: repeating-linear-gradient(45deg, #f5f0f4, #f5f0f4 4px, #e8d5e3 4px, #e8d5e3 8px);
+                    }
+                    .css-test-ultra .css-arena-c {
+                        writing-mode: vertical-rl;
+                        background: #fafafa;
+                        border: 2px dashed #714b67;
+                        letter-spacing: 0.2em;
+                    }
+                    .css-test-ultra .css-arena-d {
+                        border-radius: 50% 10% 50% 10%;
+                        background: #e8f4ff;
+                        filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.15));
+                    }
+                    .css-test-ultra .css-arena-e {
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 6px;
+                        background: rgba(113, 75, 103, 0.08);
+                    }
+                    .css-test-ultra .css-pill {
+                        display: inline-flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 3px 10px;
+                        border-radius: 999px;
+                        background: #714b67;
+                        color: #fff;
+                        font-size: 0.65rem;
+                        transform: rotate(var(--rot, 0deg));
+                    }
+                    .css-test-ultra .css-columns-3 {
+                        column-count: 3;
+                        column-gap: 16px;
+                        column-rule: 1px solid #ddd;
+                        margin-bottom: 16px;
+                        padding: 12px;
+                        background: #fefefe;
+                        border: 1px solid #eee;
+                        border-radius: 8px;
+                        font-size: 0.75rem;
+                    }
+                    .css-test-ultra .css-nested-wrap {
+                        display: flex;
+                        gap: 12px;
+                        margin-bottom: 16px;
+                    }
+                    .css-test-ultra .css-nested-left {
+                        flex: 3;
+                        position: relative;
+                    }
+                    .css-test-ultra .css-nested-right {
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                    .css-test-ultra .css-float-badge {
+                        position: absolute;
+                        top: -8px;
+                        right: 12px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 48px;
+                        height: 48px;
+                        border-radius: 50%;
+                        background: #c44d8c;
+                        color: #fff;
+                        font-size: 0.7rem;
+                        font-weight: bold;
+                        z-index: 2;
+                        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                    }
+                    .css-test-ultra .css-ultra-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        border-radius: 10px;
+                        overflow: hidden;
+                        box-shadow: 0 6px 20px rgba(113, 75, 103, 0.2);
+                    }
+                    .css-test-ultra .css-ultra-table thead th {
+                        background: linear-gradient(180deg, #4a2f42 0%, #714b67 50%, #9b6b8e 100%);
+                        color: #fff;
+                        padding: 10px 6px;
+                        text-align: center;
+                        font-size: 0.75rem;
+                        letter-spacing: 0.05em;
+                        text-transform: uppercase;
+                    }
+                    .css-test-ultra .css-ultra-table tbody td {
+                        padding: 7px 6px;
+                        text-align: center;
+                        font-size: 0.8rem;
+                        border-bottom: 1px solid #eee;
+                    }
+                    .css-test-ultra .css-ultra-table tbody tr:nth-child(odd) {
+                        background: linear-gradient(90deg, #fff 0%, #fdf5fa 50%, #fff 100%);
+                    }
+                    .css-test-ultra .css-ultra-table tbody tr:nth-child(even) {
+                        background: #f9f9f9;
+                    }
+                    .css-test-ultra .css-inner-table {
+                        width: 90%;
+                        margin: 4px auto;
+                        border-collapse: collapse;
+                        font-size: 0.7rem;
+                    }
+                    .css-test-ultra .css-inner-table td {
+                        border: 1px dotted #ccc;
+                        padding: 3px 6px;
+                        text-align: center;
+                    }
+                    .css-test-ultra .css-ultra-table tfoot td {
+                        background: #714b67;
+                        color: #fff;
+                        padding: 10px;
+                        font-weight: bold;
+                        text-align: right;
+                    }
+                    .css-test-ultra .css-side-stack {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 8px;
+                        height: 100%;
+                        padding: 12px;
+                        border-radius: 16px;
+                        background: linear-gradient(160deg, #714b67 0%, transparent 60%);
+                        color: #fff;
+                        text-align: center;
+                    }
+                    .css-test-ultra .css-side-stack .big {
+                        font-size: 1.8rem;
+                        font-weight: bold;
+                        line-height: 1;
+                    }
+                    .css-test-ultra .css-chaos-row {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        gap: 8px;
+                        margin-top: 12px;
+                        padding: 12px;
+                        border-top: 3px double #714b67;
+                    }
+                    .css-test-ultra .css-chaos-item {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-width: 60px;
+                        padding: 6px 12px;
+                        border-radius: 4px 16px 4px 16px;
+                        background: #f0e6ed;
+                        font-size: 0.7rem;
+                        transform: rotate(calc(var(--i, 0) * 3deg - 6deg));
+                    }
+                </style>
+
+                <div class="css-mega-header">
+                    <div class="css-mega-badge">ULTRA</div>
+                    <div class="css-mega-title">
+                        <h2>CSS Ultraextreme</h2>
+                        <p>Order <span t-field="doc.name"/> — <span t-field="doc.partner_id.name"/></p>
+                    </div>
+                    <div class="css-mega-stats">
+                        <span>Lines: <strong t-esc="len(doc.order_line)"/></span>
+                        <span t-field="doc.amount_total"/>
+                    </div>
+                </div>
+
+                <div class="css-arena">
+                    <div class="css-arena-cell css-arena-a">
+                        <span t-field="doc.partner_id.name"/>
+                    </div>
+                    <div class="css-arena-cell css-arena-b">
+                        <span t-field="doc.date_order" t-options="{'widget': 'date'}"/>
+                    </div>
+                    <div class="css-arena-cell css-arena-c">ULTRA</div>
+                    <div class="css-arena-cell css-arena-d">
+                        <span t-field="doc.state"/>
+                    </div>
+                    <div class="css-arena-cell css-arena-e">
+                        <span class="css-pill" style="--rot: -4deg;">grid-areas</span>
+                        <span class="css-pill" style="--rot: 3deg;">skew</span>
+                        <span class="css-pill" style="--rot: -2deg;">conic</span>
+                        <span class="css-pill" style="--rot: 5deg;">columns</span>
+                        <span class="css-pill" style="--rot: -6deg;">nested</span>
+                        <span class="css-pill" style="--rot: 2deg;">filter</span>
+                    </div>
+                </div>
+
+                <div class="css-columns-3">
+                    <p><strong>Column 1:</strong> Untaxed <span t-field="doc.amount_untaxed"/></p>
+                    <p><strong>Column 2:</strong> Tax <span t-field="doc.amount_tax"/></p>
+                    <p><strong>Column 3:</strong> Total <span t-field="doc.amount_total"/></p>
+                    <p>Multi-column layout stress test with column-rule and column-gap.</p>
+                    <p>Customer ref: <span t-field="doc.client_order_ref" t-if="doc.client_order_ref"/> <t t-else="">N/A</t></p>
+                    <p>Salesperson: <span t-field="doc.user_id.name"/></p>
+                </div>
+
+                <div class="css-nested-wrap">
+                    <div class="css-nested-left">
+                        <div class="css-float-badge">PDF</div>
+                        <table class="css-ultra-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Product</th>
+                                    <th>Qty</th>
+                                    <th>Unit</th>
+                                    <th>Disc%</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="doc.order_line" t-as="line">
+                                    <tr>
+                                        <td><span t-esc="line_index + 1"/></td>
+                                        <td>
+                                            <span t-field="line.name"/>
+                                            <table class="css-inner-table">
+                                                <tr>
+                                                    <td>SKU</td>
+                                                    <td><span t-field="line.product_id.default_code" t-if="line.product_id.default_code"/>—</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>UoM</td>
+                                                    <td><span t-field="line.product_uom_id.name"/></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td><span t-field="line.product_uom_qty"/></td>
+                                        <td><span t-field="line.price_unit"/></td>
+                                        <td><span t-field="line.discount"/></td>
+                                        <td><span t-field="line.price_subtotal"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5">Untaxed</td>
+                                    <td><span t-field="doc.amount_untaxed"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5">Taxes</td>
+                                    <td><span t-field="doc.amount_tax"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5">TOTAL</td>
+                                    <td><span t-field="doc.amount_total"/></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="css-nested-right">
+                        <div class="css-side-stack">
+                            <span class="big" t-esc="len(doc.order_line)"/>
+                            <span>order lines</span>
+                            <span t-field="doc.currency_id.name"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="css-chaos-row">
+                    <span class="css-chaos-item" style="--i: 0;">perspective</span>
+                    <span class="css-chaos-item" style="--i: 1;">writing-mode</span>
+                    <span class="css-chaos-item" style="--i: 2;">calc()</span>
+                    <span class="css-chaos-item" style="--i: 3;">drop-shadow</span>
+                    <span class="css-chaos-item" style="--i: 4;">conic-grad</span>
+                    <span class="css-chaos-item" style="--i: 5;">nested-table</span>
+                    <span class="css-chaos-item" style="--i: 6;">absolute</span>
+                    <span class="css-chaos-item" style="--i: 7;">z-index</span>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <record id="action_report_css_test_ultraextreme" model="ir.actions.report">
+        <field name="name">CSS Test — Ultraextreme</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">pdf_tester.report_css_test_ultraextreme</field>
+        <field name="report_file">pdf_tester.report_css_test_ultraextreme</field>
+        <field name="print_report_name">'CSS-Test-Ultraextreme-%s' % (object.name)</field>
+    </record>
+
 </odoo>

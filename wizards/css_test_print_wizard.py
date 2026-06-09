@@ -17,6 +17,7 @@ class CssTestPrintWizard(models.TransientModel):
             ('basic', 'Basic — tabla simple y texto centrado'),
             ('advanced', 'Advanced — flexbox, columnas y tabla estilizada'),
             ('extreme', 'Extreme — grid, gradientes, sombras y layout complejo'),
+            ('ultraextreme', 'Ultraextreme — grid areas, transforms, tablas anidadas, filtros'),
         ],
         string='CSS Template',
         required=True,
@@ -27,6 +28,7 @@ class CssTestPrintWizard(models.TransientModel):
         'basic': 'pdf_tester.action_report_css_test_basic',
         'advanced': 'pdf_tester.action_report_css_test_advanced',
         'extreme': 'pdf_tester.action_report_css_test_extreme',
+        'ultraextreme': 'pdf_tester.action_report_css_test_ultraextreme',
     }
 
     def action_print_css_test(self):
